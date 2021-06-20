@@ -1,0 +1,28 @@
+version: '3'
+
+services: 
+    db:
+        build: ./db/
+        ports: 
+            - "5432:5432"
+    
+    app:
+        build: ./app/
+        tty: true
+        depends_on: 
+            - db
+        volumes: 
+            - ./app/source/:/app
+        ports:
+            - "3000:3000"
+    
+    pgadmin4:
+        image: dpage/pgadmin4
+        depends_on:
+            - db
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: root@root.com
+            PGADMIN_DEFAULT_PASSWORD: password
+        ports:
+            - "8000:80"
+            
